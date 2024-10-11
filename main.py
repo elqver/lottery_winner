@@ -1,6 +1,3 @@
-from score import score
-
-
 def transpose(data: list[list[str]]) -> list[list[str]]:
     return [list(row) for row in zip(*data)]
 
@@ -23,12 +20,22 @@ def read_data(path: str) -> list[list[str]]:
 
 def main():
     data = read_data('examples/1.txt')
+
+    trans = {
+        "+": 1,
+        "-": 0,
+        "=": -1,
+    }
+
+    data = [[trans[v] for v in d[::-1]] for d in data]
     values = [
-        (i + 1, score(data[i])) for i in range(len(data))
+        (i + 1, data[i]) for i in range(len(data))
     ]
-    sorted_values = sorted(values, key=lambda x: x[1], reverse=True)
-    for index, value in sorted_values:
-        print(f'{index}: {value}: {data[index - 1][::-1]}')
+
+    values.sort(key=lambda x: x[1], reverse=True)
+
+    for i, v in values:
+        print(f"{i}: {v}")
 
 
 if __name__ == '__main__':
